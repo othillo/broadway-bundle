@@ -28,13 +28,3 @@ For example an event listener that collects successfully executed commands:
     event="broadway.command_handling.command_success"
     method="onCommandHandlingSuccess" />
 ```
-
-## Metadata enrichers
-
-It is possible to add additional metadata to persisted events. This is useful
-for recording extra contextual (auditing) data such as the currently logged in
-user, an ip address or some request token.
-
-```xml
-<tag name="broadway.metadata_enricher" />
-```

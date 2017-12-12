@@ -8,6 +8,7 @@
 * [Services](services.md)
 * [Tags](tags.md)
 * [Saga](saga.md)
+* [Metadata enrichment](metadata_enrichment.md)
 
 # Introduction
 The Broadway bundle is a bundle to integrate [Broadway](https://github.com/broadway/broadway) into a Symfony application.

@@ -17,7 +17,7 @@ broadway:
     # a service definition id implementing Broadway\ReadModel\RepositoryFactory
     read_model: broadway.read_model.in_memory.repository_factory
 
-     # service definition ids implementing Broadway\Serializer\Serializer
+    # service definition ids implementing Broadway\Serializer\Serializer
     serializer:
         payload: broadway.simple_interface_serializer
         readmodel: broadway.simple_interface_serializer

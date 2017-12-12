@@ -1,13 +1,13 @@
 # Index
 
 * Introduction
-* [Installation](https://broadway.github.io/broadway-bundle/installation.md)
-* [Configuration](https://broadway.github.io/broadway-bundle/configuration.md)
-* [Event store](https://broadway.github.io/broadway-bundle/event_store.md)
-* [Read models](https://broadway.github.io/broadway-bundle/read_model.md)
-* [Services](https://broadway.github.io/broadway-bundle/services.md)
-* [Tags](https://broadway.github.io/broadway-bundle/tags.md)
-* [Saga](https://broadway.github.io/broadway-bundle/saga.md)
+* [Installation](installation.md)
+* [Configuration](configuration.md)
+* [Event store](event_store.md)
+* [Read models](read_model.md)
+* [Services](services.md)
+* [Tags](tags.md)
+* [Saga](saga.md)
 
 # Introduction
 The Broadway bundle is a bundle to integrate [Broadway](https://github.com/broadway/broadway) into a Symfony application.

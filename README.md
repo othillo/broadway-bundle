@@ -3,10 +3,39 @@ Broadway Bundle
 
 Symfony bundle to integrate Broadway into your Symfony application.
 
-> Note: this bundle is far from complete. Please let us know (or send a pull
-> request) if you miss any configuration options, etc!
+## Installation
 
-## Usage
+### Symfony Flex
+
+The easiest way to install and configure the BroadwayBundle with Symfony is by using
+[Symfony Flex](https://github.com/symfony/flex).
+
+Make sure you have Symfony Flex installed:
+
+```
+$ composer require symfony/flex ^1.0
+$ composer config extra.symfony.allow-contrib true
+```
+
+Install the bundle:
+
+```
+$ composer require broadway/broadway-bundle
+```
+
+Symfony Flex will automatically register and configure the bundle.
+
+By default in-memory implementations of the event store and read models are used.
+You can install one of the persistent implementations as described in the
+`Event store` and `Read model` sections below.
+
+### Manually
+
+Install the bundle:
+
+```
+$ composer require broadway/broadway-bundle
+```
 
 Register the bundle in your application kernel:
 
@@ -18,54 +47,29 @@ $bundles = array(
 
 ```
 
-> Note: in order to use the bundle you need some additional dependencies. See
-> the suggest key of the composer.json file.
+## Event store
 
-## Services
-
-Once enabled the bundle will expose several services, such as:
-
-- `broadway.command_handling.command_bus` command bus to inject if you use commands
-- `broadway.event_store` alias to the active event store
-- `broadway.uuid.generator` active uuid generator
-
-## Event Store
-
+Broadway provides several event store implementations.
 By default the [InMemoryEventStore](https://github.com/broadway/broadway/blob/master/src/Broadway/EventStore/InMemoryEventStore.php) is
 used.
 
-Broadway provides a persisting event store implementation using `doctrine/dbal`
-in [broadway/event-store-dbal](https://github.com/broadway/event-store-dbal).
+There a several optional persisting event store implementations:
+* [broadway/event-store-dbal](https://github.com/broadway/event-store-dbal) using [Doctrine DBAL](https://github.com/doctrine/dbal)
+* [broadway/event-store-mongodb](https://github.com/broadway/event-store-mongodb) using MongoDB
 
-This can be installed using composer:
+These can be very easily installed using [Symfony Flex](https://github.com/symfony/flex).
 
-```
-$ composer require broadway/event-store-dbal
-```
-
-You will need to configure an event store in your application's service definition:
-
-```xml
-<!-- services.xml -->
-<service id="my_dbal_event_store" class="Broadway\EventStore\Dbal\DBALEventStore">
-    <argument type="service" id="doctrine.dbal.default_connection" />
-    <argument type="service" id="broadway.serializer.payload" />
-    <argument type="service" id="broadway.serializer.metadata" />
-    <argument>events</argument>
-    <argument>false</argument>
-    <argument type="service" id="broadway.uuid.converter" />
-</service>
-```
-
-And tell the Broadway bundle to use it:
+Of course there are other implementations and you can also create your own:
 
 ```yaml
 # config.yml
 broadway:
-  event_store: "my_dbal_event_store"
+  # a service definition id implementing Broadway\EventStore\EventStore,
+  event_store: "my_event_store"
 ```
 
-To generate the mysql schema for the event store use the following command
+@ todo move to event-store-dbal
+To generate the MySQL schema for the event store use the following command:
 
 ```bash
 bin/console broadway:event-store:schema:init
@@ -79,42 +83,32 @@ bin/console broadway:event-store:schema:drop
 
 ## Read models
 
+Broadway provides several read model implementations.
 By default the [in memory](https://github.com/broadway/broadway/tree/master/src/Broadway/ReadModel/InMemory) 
 read model implementation is used.
 
-Broadway provides a persisting read model implementation using `Elasticsearch`
-in [broadway/read-model-elasticsearch](https://github.com/broadway/read-model-elasticsearch).
+There a several optional persisting read model implementations:
+* [broadway/read-model-elasticsearch](https://github.com/broadway/read-model-elasticsearch) using Elasticsearch
+* [broadway/read-model-mongodb](https://github.com/broadway/read-model-mongodb) using MongoDB
 
-This can be installed using composer:
+These can be very easily installed using [Symfony Flex](https://github.com/symfony/flex).
 
-```
-$ composer require broadway/read-model-elasticsearch
-```
-
-You need to configure its read model repository factory in you application:
-
-```xml
-<!-- services.xml -->
-<service id="my_read_model_repository_factory" class="Broadway\ReadModel\ElasticSearch\ElasticSearchRepositoryFactory">
-    <argument type="service" id="my_elasticsearch_client" />
-    <argument type="service" id="broadway.serializer.readmodel" />
-</service>
-
-<service id="my_elasticsearch_client" class="Elasticsearch\Client">
-    <factory service="broadway.elasticsearch.client_factory" method="create" />
-    <argument>%elasticsearch%</argument>
-</service>
-
-<service id="broadway.elasticsearch.client_factory" class="Broadway\ReadModel\ElasticSearch\ElasticSearchClientFactory" public="false" />
-```
-
-And tell the Broadway bundle to use it:
+Of course there are other implementations and you can also create your own:
 
 ```yaml
 # config.yml
 broadway:
+  # a service definition id implementing Broadway\ReadModel\RepositoryFactory
   read_model: "my_read_model_repository_factory"
 ```
+
+## Services
+
+Once enabled the bundle will expose several services, such as:
+
+- `broadway.command_handling.command_bus` command bus to inject if you use commands
+- `broadway.event_store` alias to the active event store
+- `broadway.uuid.generator` active uuid generator
 
 ## Tags
 
@@ -168,50 +162,8 @@ This can be installed using composer:
 $ composer require broadway/broadway-saga
 ```
 
-To enable it, add the following configuration:
-
-```yaml
-# config.yml
-broadway:
-  saga:
-    enabled: true
-```
-
-Be default its [in memory](https://github.com/broadway/broadway-saga/blob/master/src/State/InMemoryRepository.php) state repository is configured.
-
-To use the MongoDB implementation you need to configure it:
-
-```xml
-<!-- services.xml -->
-<service id="my_saga_state_repository" class="Broadway\Saga\State\MongoDBRepository">
-    <argument type="service" id="my_mongodb_collection" />
-</service>
-
-<service id="my_mongodb_collection" class="Doctrine\MongoDB\Collection">
-    <factory service="my_mongodb_database" method="createCollection" />
-    <argument>saga-state</argument>
-</service>
-
-<service id="my_mongodb_database" class="Doctrine\MongoDB\Database">
-    <factory service="my_mongodb_connection" method="selectDatabase" />
-    <argument>%broadway.saga.mongodb.database%</argument>
-</service>
-
-<service id="my_mongodb_connection" class="Doctrine\MongoDB\Connection">
-    <argument>null</argument>
-    <argument type="collection" />
-</service>
-```
-
-And tell the Broadway bundle to use it:
-
-```yaml
-# config.yml
-broadway:
-  saga:
-    enabled: true
-    state_repository: "my_saga_state_repository"
-```
+When using [Symfony Flex](https://github.com/symfony/flex) the required
+services are configured automatically.
 
 Register sagas using the `broadway.saga` service tag:
  

@@ -1,6 +1,4 @@
-# BroadwayBundle documentation
-
-## Index
+# Index
 
 * Introduction
 * [Installation](https://broadway.github.io/broadway-bundle/installation.md)
@@ -11,7 +9,7 @@
 * [Tags](https://broadway.github.io/broadway-bundle/tags.md)
 * [Saga](https://broadway.github.io/broadway-bundle/saga.md)
 
-## Introduction
+# Introduction
 The Broadway bundle is a bundle to integrate [Broadway](https://github.com/broadway/broadway) into a Symfony application.
 
 * Easy installation and configuration using [Symfony Flex](https://github.com/symfony/flex).

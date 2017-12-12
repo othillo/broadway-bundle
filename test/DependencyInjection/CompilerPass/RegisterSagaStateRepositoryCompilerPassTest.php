@@ -11,7 +11,6 @@
 
 namespace Broadway\Bundle\BroadwayBundle\DependencyInjection;
 
-use Broadway\EventStore\EventStore;
 use Broadway\Saga\State\RepositoryInterface;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,6 +23,8 @@ class RegisterSagaStateRepositoryCompilerPassTest extends AbstractCompilerPassTe
      */
     protected function registerCompilerPass(ContainerBuilder $container)
     {
+        $this->setDefinition('broadway.saga.state.in_memory_repository', new Definition(RepositoryInterface::class));
+
         $container->addCompilerPass(new RegisterSagaStateRepositoryCompilerPass());
     }
 
@@ -38,6 +39,8 @@ class RegisterSagaStateRepositoryCompilerPassTest extends AbstractCompilerPassTe
             'broadway.saga.state.repository',
             'broadway.saga.state.in_memory_repository'
         );
+
+        $this->assertTrue($this->container->getAlias('broadway.saga.state.repository')->isPublic());
     }
 
     /**
@@ -58,6 +61,8 @@ class RegisterSagaStateRepositoryCompilerPassTest extends AbstractCompilerPassTe
             'broadway.saga.state.repository',
             'my_saga_state_repository'
         );
+
+        $this->assertTrue($this->container->getAlias('broadway.saga.state.repository')->isPublic());
     }
 
     /**

@@ -10,11 +10,10 @@
   ],
   "license": "MIT",
   "require": {
-    "php": ">=5.5.9",
-    "broadway/broadway": "^1.0",
-    "doctrine/doctrine-bundle": "^1.0",
-    "symfony/console": "^2.3|^3.0",
-    "symfony/http-kernel": "^2.3|^3.0"
+    "php": ">=7.0",
+    "broadway/broadway": "^2.0",
+    "symfony/console": "^2.3||^3.0||^4.0",
+    "symfony/http-kernel": "^2.3||^3.0||^4.0"
   },
   "authors": [
     {
@@ -43,20 +42,18 @@
     }
   ],
   "require-dev": {
-    "instaclick/base-test-bundle": "~0.5",
-    "doctrine/doctrine-bundle": "^1.0",
+    "symfony/framework-bundle": "^2.3||^3.0||^4.0",
     "monolog/monolog": "~1.8",
-    "symfony/proxy-manager-bridge": "~2.4",
-    "phpunit/phpunit": "^4.8",
+    "symfony/proxy-manager-bridge": "^2.3||^3.0||^4.0",
+    "phpunit/phpunit": "^4.8||^5.0",
     "matthiasnoback/symfony-config-test": "^2.0",
     "matthiasnoback/symfony-dependency-injection-test": "^1.1",
-    "broadway/broadway-saga": "^0.2"
+    "broadway/broadway-saga": "^0.3"
   },
   "suggest": {
     "psr/log-implementation": "Implementation for PSR3, LoggerInterface",
     "broadway/event-store-dbal": "Event store implementation using doctrine/dbal",
-    "broadway/read-model-elasticsearch": "Elasticsearch read model implementation using elastic/elasticsearch-php",
-    "doctrine/doctrine-bundle": "To use the broadway:event-store:schema commands"
+    "broadway/read-model-elasticsearch": "Elasticsearch read model implementation using elastic/elasticsearch-php"
   },
   "autoload": {
     "psr-4": {
@@ -70,7 +67,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "0.3.x-dev"
+      "dev-master": "1.0.x-dev"
     }
   }
 }

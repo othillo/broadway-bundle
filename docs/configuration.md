@@ -10,16 +10,28 @@ The full default configuration is as follows:
 # config.yml
 # from ./bin/console debug:config broadway
 broadway:
-    event_store: broadway.event_store.in_memory                    # a service definition id implementing Broadway\EventStore\EventStore
-    read_model: broadway.read_model.in_memory.repository_factory   # a service definition id implementing Broadway\ReadModel\RepositoryFactory
+
+    # a service definition id implementing Broadway\EventStore\EventStore
+    event_store: broadway.event_store.in_memory
+
+    # a service definition id implementing Broadway\ReadModel\RepositoryFactory
+    read_model: broadway.read_model.in_memory.repository_factory
+
+     # service definition ids implementing Broadway\Serializer\Serializer
     serializer:
         payload: broadway.simple_interface_serializer
         readmodel: broadway.simple_interface_serializer
         metadata: broadway.simple_interface_serializer
+
     command_handling:
         dispatch_events: false
-        logger: null                                               # If you want to log every command handled, provide the logger's service id here (e.g. "logger")
+
+        # a service definition id implementing Psr\Log\LoggerInterface
+        logger: ~
+
     saga:
         enabled: false
-        state_repository: broadway.saga.state.in_memory_repository # a service definition id implementing Broadway\Saga\State\RepositoryInterface
+
+        # a service definition id implementing Broadway\Saga\State\RepositoryInterface
+        state_repository: broadway.saga.state.in_memory_repository
 ```
